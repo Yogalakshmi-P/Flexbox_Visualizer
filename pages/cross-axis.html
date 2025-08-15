@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flexbox Visualizer</title>
+    <link rel="icon" type="image/png" href="images/image.png" />
+    <style>
+      :root {
+        --bg-top: #0e1b4b;
+        --bg-bottom: #0b122b;
+        --ink: #c9d1d9;
+        --card: #0d1117;
+        --accent: #4c9aff;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        overflow-x: hidden;
+      }
+      body {
+        font-family: ui-sans-serif, system-ui, Arial, Helvetica, sans-serif;
+        color: #fff;
+        min-height: 100vh;
+        background: linear-gradient(
+          180deg,
+          var(--bg-top) 0%,
+          var(--bg-bottom) 100%
+        );
+        display: flex;
+        flex-direction: column;
+      }
+      /* Navbar */
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #0d1b3d;
+        padding: 14px 40px;
+        color: white;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+      }
+      .navbar-left img {
+        width: 40px;
+        height: 40px;
+      }
+      .navbar-left h1 {
+        font-size: 22px;
+        font-weight: bold;
+      }
+      /* Styled dropdown */
+      select {
+        background-color: #141414;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      select:hover {
+        background-color: #1f1f1f;
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+      select:focus {
+        outline: none;
+        border-color: #4a90e2;
+        background-color: #1a1a1a;
+      }
+      option {
+        background-color: #0a0a0a;
+        color: white;
+      }
+      /* Layout */
+      .wrap {
+        width: 100%;
+        margin: 28px auto;
+        display: grid;
+        gap: 18px;
+        grid-template-columns: 80% 20%;
+        padding: 0 16px;
+      }
+      @media (max-width: 900px) {
+        .wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+      .stage {
+        position: relative;
+        padding: 22px;
+        border-radius: 18px;
+        min-height: 360px;
+        background: radial-gradient(
+            1200px 300px at 50% 120%,
+            rgba(126, 87, 243, 0.25),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 260px at 40% -40%,
+            rgba(59, 130, 246, 0.18),
+            transparent 60%
+          ),
+          rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35) inset;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .controls label {
+        opacity: 0.85;
+      }
+      .controls select {
+        margin-left: 6px;
+      }
+      /* Playground */
+      .playground {
+        display: flex;
+        gap: 16px;
+        min-height: 260px;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        transition: all 0.25s ease;
+      }
+      /* Colorful tiles */
+      .box {
+        flex: 0 0 140px;
+        height: 90px;
+        border-radius: 16px;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        transition: transform 0.2s ease;
+      }
+      .box:hover {
+        transform: translateY(-4px);
+      }
+      .g1 {
+        background: linear-gradient(180deg, #ff7a18, #ff3d81);
+      }
+      .g2 {
+        background: linear-gradient(180deg, #7dd3fc, #06b6d4);
+      }
+      .g3 {
+        background: linear-gradient(180deg, #a78bfa, #7c3aed);
+      }
+      .g4 {
+        background: linear-gradient(180deg, #fb923c, #f59e0b);
+      }
+      .g5 {
+        background: linear-gradient(180deg, #86efac, #22c55e);
+      }
+      /* Code panel */
+      .code {
+        background: #0d1117;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 18px;
+        overflow: auto;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        color: #e6edf3;
+        line-height: 1.5;
+        min-height: 360px;
+      }
+      .code pre {
+        margin: 0;
+        white-space: pre;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="navbar-left" onclick="window.location.href='main.html'">
+        <img src="images/image.png" alt="Logo" />
+        <h1>Flexbox Visualizer</h1>
+      </div>
+      <select onchange="navigateToPage(this.value)">
+        <option value="main-axis.html">Main Axis Alignment</option>
+        <option value="flex-direction.html">Flex Direction</option>
+        <option value="cross-axis.html" selected>Cross Axis Alignment</option>
+        <option value="multiple-lines.html">Multiple Lines</option>
+        <option value="align-content.html">Align Content</option>
+      </select>
+    </div>
+
+    <main class="wrap">
+      <section class="stage">
+        <div class="controls">
+          <label>
+            align-items
+            <select id="value">
+              <option>stretch</option>
+              <option>flex-start</option>
+              <option>flex-end</option>
+              <option>center</option>
+              <option>baseline</option>
+            </select>
+          </label>
+        </div>
+        <div id="playground" class="playground" style="height: 300px">
+          <div class="box g1" style="height: 60px"></div>
+          <div class="box g2" style="height: 100px"></div>
+          <div class="box g3" style="height: 80px"></div>
+          <div class="box g4" style="height: 120px"></div>
+          <div class="box g5" style="height: 90px"></div>
+        </div>
+      </section>
+
+      <aside class="code">
+        <pre id="code"></pre>
+      </aside>
+    </main>
+
+    <script>
+      function navigateToPage(page) {
+        if (page) {
+          window.location.href = page;
+        }
+      }
+      const pg = document.getElementById("playground");
+      const value = document.getElementById("value");
+      const code = document.getElementById("code");
+
+      function render() {
+        pg.style.alignItems = value.value;
+        code.textContent = `/* Container */\n.playground {\n  display: flex;\n  gap: 16px;\n  align-items: ${value.value};\n}\n\n/* Items */\n.box {\n  flex: 0 0 140px;\n}`;
+      }
+
+      value.addEventListener("change", render);
+      render();
+    </script>
+  </body>
+</html>

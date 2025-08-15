@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flexbox Visualizer</title>
+    <link rel="icon" type="image/png" href="images/image.png" />
+    <style>
+      :root {
+        --bg-top: #0e1b4b;
+        --bg-bottom: #0b122b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: ui-sans-serif, system-ui, Arial;
+        color: #fff;
+        height: 100%;
+        overflow: hidden;
+        background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+        display: flex;
+        flex-direction: column;
+      }
+      /* Navbar */
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #0d1b3d;
+        padding: 14px 40px;
+        color: white;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* Logo + text */
+      .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+      }
+
+      .navbar-left img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .navbar-left h1 {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 0;
+      }
+
+      /* Styled dropdown */
+      select {
+        background-color: #141414;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      select:hover {
+        background-color: #1f1f1f;
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+
+      select:focus {
+        outline: none;
+        border-color: #4a90e2;
+        background-color: #1a1a1a;
+      }
+
+      option {
+        background-color: #0a0a0a;
+        color: white;
+      }
+      .wrap {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 80% 20%;
+        height: 100%;
+      }
+      .stage {
+        padding: 22px;
+        border-radius: 18px;
+        background: radial-gradient(
+            1200px 300px at 50% 120%,
+            rgba(126, 87, 243, 0.25),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 260px at 40% -40%,
+            rgba(59, 130, 246, 0.18),
+            transparent 60%
+          ),
+          rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35) inset;
+        display: flex;
+        flex-direction: column;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .controls select {
+        background: #0d1117;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border-radius: 10px;
+        padding: 10px 12px;
+      }
+      .playground {
+        flex: 1;
+        display: flex;
+        gap: 16px;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        transition: all 0.25s;
+        flex-wrap: wrap;
+      }
+      .item {
+        flex: 0 0 180px;
+        height: 88px;
+        border-radius: 16px;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      }
+      .g1 {
+        background: linear-gradient(180deg, #ff7a18, #ff3d81);
+      }
+      .g2 {
+        background: linear-gradient(180deg, #7dd3fc, #06b6d4);
+      }
+      .g3 {
+        background: linear-gradient(180deg, #a78bfa, #7c3aed);
+      }
+      .g4 {
+        background: linear-gradient(180deg, #fb923c, #f59e0b);
+      }
+      .g5 {
+        background: linear-gradient(180deg, #86efac, #22c55e);
+      }
+      .g6 {
+        background: linear-gradient(180deg, #f472b6, #ec4899);
+      }
+      .g7 {
+        background: linear-gradient(180deg, #fca5a5, #ef4444);
+      }
+      .g8 {
+        background: linear-gradient(180deg, #93c5fd, #3b82f6);
+      }
+      .g9 {
+        background: linear-gradient(180deg, #fde68a, #f59e0b);
+      }
+      .g10 {
+        background: linear-gradient(180deg, #a7f3d0, #10b981);
+      }
+      .g11 {
+        background: linear-gradient(180deg, #d8b4fe, #8b5cf6);
+      }
+      .g12 {
+        background: linear-gradient(180deg, #facc15, #eab308);
+      }
+      .code {
+        background: #0d1117;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 18px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        color: #e6edf3;
+        line-height: 1.5;
+        overflow: auto;
+        height: 100%;
+      }
+      .code pre {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <!-- Logo + Heading -->
+      <div class="navbar-left" onclick="window.location.href='main.html'">
+        <img src="images/image.png" alt="Logo" />
+        <h1>Flexbox Visualizer</h1>
+      </div>
+
+      <!-- Dropdown Menu -->
+      <select onchange="navigateToPage(this.value)">
+        <option value="main-axis.html">Main Axis Alignment</option>
+        <option value="flex-direction.html">Flex Direction</option>
+        <option value="cross-axis.html">Cross Axis Alignment</option>
+        <option value="multiple-lines.html">Multiple Lines</option>
+        <option value="align-content.html">Align Content</option>
+      </select>
+    </div>
+
+    <main class="wrap">
+      <section class="stage">
+        <div class="controls">
+          <label
+            >flex-wrap
+            <select id="wrapSel">
+              <option>wrap</option>
+              <option>nowrap</option>
+              <option>wrap-reverse</option>
+            </select>
+          </label>
+          <label
+            >justify-content
+            <select id="jc">
+              <option>flex-start</option>
+              <option>center</option>
+              <option>flex-end</option>
+              <option>space-between</option>
+              <option>space-around</option>
+              <option>space-evenly</option>
+            </select>
+          </label>
+          <label
+            >align-content
+            <select id="ac">
+              <option>stretch</option>
+              <option>flex-start</option>
+              <option>center</option>
+              <option>flex-end</option>
+              <option>space-between</option>
+              <option>space-around</option>
+            </select>
+          </label>
+        </div>
+        <div id="playground" class="playground">
+          <div class="item g1"></div>
+          <div class="item g2"></div>
+          <div class="item g3"></div>
+          <div class="item g4"></div>
+          <div class="item g5"></div>
+          <div class="item g6"></div>
+          <div class="item g7"></div>
+          <div class="item g8"></div>
+          <div class="item g9"></div>
+          <div class="item g10"></div>
+          <div class="item g11"></div>
+          <div class="item g12"></div>
+        </div>
+      </section>
+      <aside class="code"><pre id="code"></pre></aside>
+    </main>
+
+    <script>
+      function navigateToPage(page) {
+        if (page) {
+          window.location.href = page;
+        }
+      }
+
+      const pg = document.getElementById("playground"),
+        wrapSel = document.getElementById("wrapSel"),
+        jc = document.getElementById("jc"),
+        ac = document.getElementById("ac"),
+        code = document.getElementById("code");
+
+      function render() {
+        pg.style.flexWrap = wrapSel.value;
+        pg.style.justifyContent = jc.value;
+        pg.style.alignContent = ac.value;
+        code.textContent = `/* Container (multiple lines) */
+.playground{
+  display: flex;
+  gap: 16px;
+  flex-wrap: ${wrapSel.value};
+  justify-content: ${jc.value};
+  align-content: ${ac.value};
+}
+
+.item{ flex: 0 0 180px; height: 88px; }`;
+      }
+
+      wrapSel.onchange = jc.onchange = ac.onchange = render;
+      render();
+    </script>
+  </body>
+</html>
