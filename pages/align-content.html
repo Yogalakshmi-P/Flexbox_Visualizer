@@ -9,28 +9,23 @@
       :root {
         --bg-top: #0e1b4b;
         --bg-bottom: #0b122b;
-        --ink: #c9d1d9;
-        --card: #0d1117;
-        --accent: #4c9aff;
       }
       * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
-        overflow-x: hidden;
-      }
-      body {
-        font-family: ui-sans-serif, system-ui, Arial, Helvetica, sans-serif;
+        font-family: ui-sans-serif, system-ui, Arial;
         color: #fff;
-        min-height: 100vh;
-        background: linear-gradient(
-          180deg,
-          var(--bg-top) 0%,
-          var(--bg-bottom) 100%
-        );
+        height: 100%;
+        overflow: hidden;
+        background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
         display: flex;
         flex-direction: column;
       }
+
       /* Navbar */
       .navbar {
         display: flex;
@@ -41,20 +36,26 @@
         color: white;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
+
+      /* Logo + text */
       .navbar-left {
         display: flex;
         align-items: center;
         gap: 12px;
         cursor: pointer;
       }
+
       .navbar-left img {
         width: 40px;
         height: 40px;
       }
+
       .navbar-left h1 {
         font-size: 22px;
         font-weight: bold;
+        margin: 0;
       }
+
       /* Styled dropdown */
       select {
         background-color: #141414;
@@ -66,38 +67,31 @@
         cursor: pointer;
         transition: all 0.2s ease;
       }
+
       select:hover {
         background-color: #1f1f1f;
         border-color: rgba(255, 255, 255, 0.4);
       }
+
       select:focus {
         outline: none;
         border-color: #4a90e2;
         background-color: #1a1a1a;
       }
+
       option {
         background-color: #0a0a0a;
         color: white;
       }
-      /* Layout */
       .wrap {
-        width: 100%;
-        margin: 28px auto;
+        flex: 1;
         display: grid;
-        gap: 18px;
         grid-template-columns: 80% 20%;
-        padding: 0 16px;
-      }
-      @media (max-width: 900px) {
-        .wrap {
-          grid-template-columns: 1fr;
-        }
+        height: 100%;
       }
       .stage {
-        position: relative;
         padding: 22px;
         border-radius: 18px;
-        min-height: 360px;
         background: radial-gradient(
             1200px 300px at 50% 120%,
             rgba(126, 87, 243, 0.25),
@@ -111,6 +105,8 @@
           rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35) inset;
+        display: flex;
+        flex-direction: column;
       }
       .controls {
         display: flex;
@@ -118,34 +114,29 @@
         gap: 10px;
         margin-bottom: 14px;
       }
-      .controls label {
-        opacity: 0.85;
-      }
       .controls select {
-        margin-left: 6px;
+        background: #0d1117;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border-radius: 10px;
+        padding: 10px 12px;
       }
-      /* Playground */
       .playground {
+        flex: 1;
         display: flex;
         gap: 16px;
-        min-height: 260px;
         padding: 14px;
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.07);
         border-radius: 14px;
-        transition: all 0.25s ease;
+        transition: all 0.25s;
       }
-      /* Colorful tiles */
-      .box {
-        flex: 0 0 140px;
-        height: 90px;
+      .item {
+        flex: 0 0 120px;
+        height: 60px;
         border-radius: 16px;
         box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35),
           inset 0 1px 0 rgba(255, 255, 255, 0.15);
-        transition: transform 0.2s ease;
-      }
-      .box:hover {
-        transform: translateY(-4px);
       }
       .g1 {
         background: linear-gradient(180deg, #ff7a18, #ff3d81);
@@ -162,32 +153,32 @@
       .g5 {
         background: linear-gradient(180deg, #86efac, #22c55e);
       }
-      /* Code panel */
       .code {
         background: #0d1117;
         border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 18px;
         padding: 18px;
-        overflow: auto;
         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
         color: #e6edf3;
         line-height: 1.5;
-        min-height: 360px;
+        overflow: auto;
+        height: 100%;
       }
       .code pre {
         margin: 0;
-        white-space: pre;
       }
     </style>
   </head>
   <body>
     <div class="navbar">
-      <div class="navbar-left" onclick="window.location.href='index.html'">
+      <!-- Logo + Heading -->
+      <div class="navbar-left" onclick="window.location.href='main.html'">
         <img src="images/image.png" alt="Logo" />
         <h1>Flexbox Visualizer</h1>
       </div>
+
+      <!-- Dropdown Menu -->
       <select onchange="navigateToPage(this.value)">
-        <option value="main-axis.html" selected>Main Axis Alignment</option>
+        <option value="main-axis.html">Main Axis Alignment</option>
         <option value="flex-direction.html">Flex Direction</option>
         <option value="cross-axis.html">Cross Axis Alignment</option>
         <option value="multiple-lines.html">Multiple Lines</option>
@@ -198,12 +189,22 @@
     <main class="wrap">
       <section class="stage">
         <div class="controls">
-          <label>
-            justify-content
-            <select id="value">
+          <label
+            >align-items
+            <select id="ai">
+              <option>stretch</option>
               <option>flex-start</option>
-              <option>flex-end</option>
               <option>center</option>
+              <option>flex-end</option>
+              <option>baseline</option>
+            </select>
+          </label>
+          <label
+            >justify-content
+            <select id="jc">
+              <option>flex-start</option>
+              <option>center</option>
+              <option>flex-end</option>
               <option>space-between</option>
               <option>space-around</option>
               <option>space-evenly</option>
@@ -211,17 +212,14 @@
           </label>
         </div>
         <div id="playground" class="playground">
-          <div class="box g1"></div>
-          <div class="box g2"></div>
-          <div class="box g3"></div>
-          <div class="box g4"></div>
-          <div class="box g5"></div>
+          <div class="item g1"></div>
+          <div class="item g2"></div>
+          <div class="item g3"></div>
+          <div class="item g4"></div>
+          <div class="item g5"></div>
         </div>
       </section>
-
-      <aside class="code">
-        <pre id="code"></pre>
-      </aside>
+      <aside class="code"><pre id="code"></pre></aside>
     </main>
 
     <script>
@@ -230,16 +228,25 @@
           window.location.href = page;
         }
       }
-      const pg = document.getElementById("playground");
-      const value = document.getElementById("value");
-      const code = document.getElementById("code");
+
+      const pg = document.getElementById("playground"),
+        ai = document.getElementById("ai"),
+        jc = document.getElementById("jc"),
+        code = document.getElementById("code");
 
       function render() {
-        pg.style.justifyContent = value.value;
-        code.textContent = `/* Container */\n.playground {\n  display: flex;\n  gap: 16px;\n  justify-content: ${value.value};\n}\n\n/* Items */\n.box {\n  flex: 0 0 140px;\n  height: 90px;\n}`;
+        pg.style.alignItems = ai.value;
+        pg.style.justifyContent = jc.value;
+        code.textContent = `/* Container (align-items demo) */
+.playground{
+  display: flex;
+  gap: 16px;
+  align-items: ${ai.value};
+  justify-content: ${jc.value};
+}`;
       }
 
-      value.addEventListener("change", render);
+      ai.onchange = jc.onchange = render;
       render();
     </script>
   </body>
