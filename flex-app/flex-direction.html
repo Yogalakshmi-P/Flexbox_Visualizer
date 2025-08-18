@@ -20,6 +20,7 @@
         overflow-x: hidden;
       }
       body {
+        margin: 0;
         font-family: ui-sans-serif, system-ui, Arial, Helvetica, sans-serif;
         color: #fff;
         min-height: 100vh;
@@ -41,20 +42,26 @@
         color: white;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
+
+      /* Logo + text */
       .navbar-left {
         display: flex;
         align-items: center;
         gap: 12px;
         cursor: pointer;
       }
+
       .navbar-left img {
         width: 40px;
         height: 40px;
       }
+
       .navbar-left h1 {
         font-size: 22px;
         font-weight: bold;
+        margin: 0;
       }
+
       /* Styled dropdown */
       select {
         background-color: #141414;
@@ -66,33 +73,39 @@
         cursor: pointer;
         transition: all 0.2s ease;
       }
+
       select:hover {
         background-color: #1f1f1f;
         border-color: rgba(255, 255, 255, 0.4);
       }
+
       select:focus {
         outline: none;
         border-color: #4a90e2;
         background-color: #1a1a1a;
       }
+
       option {
         background-color: #0a0a0a;
         color: white;
       }
       /* Layout */
       .wrap {
+        max-width: none; /* Remove fixed max-width */
         width: 100%;
         margin: 28px auto;
         display: grid;
         gap: 18px;
-        grid-template-columns: 80% 20%;
+        grid-template-columns: 80% 20%; /* Visualizer 80%, Code 20% */
         padding: 0 16px;
       }
+
       @media (max-width: 900px) {
         .wrap {
-          grid-template-columns: 1fr;
+          grid-template-columns: 1fr; /* Stack for small screens */
         }
       }
+
       .stage {
         position: relative;
         padding: 22px;
@@ -124,7 +137,8 @@
       .controls select {
         margin-left: 6px;
       }
-      /* Playground */
+
+      /* The visualized flex container */
       .playground {
         display: flex;
         gap: 16px;
@@ -135,6 +149,7 @@
         border-radius: 14px;
         transition: all 0.25s ease;
       }
+
       /* Colorful tiles */
       .box {
         flex: 0 0 140px;
@@ -162,6 +177,7 @@
       .g5 {
         background: linear-gradient(180deg, #86efac, #22c55e);
       }
+
       /* Code panel */
       .code {
         background: #0d1117;
@@ -178,38 +194,49 @@
         margin: 0;
         white-space: pre;
       }
+      .badge {
+        display: inline-block;
+        background: #1f6feb;
+        color: #fff;
+        border-radius: 999px;
+        padding: 2px 8px;
+        font-size: 0.8rem;
+        margin-left: 8px;
+      }
     </style>
   </head>
   <body>
     <div class="navbar">
-      <div class="navbar-left" onclick="window.location.href='main.html'">
+      <!-- Logo + Heading -->
+      <div class="navbar-left" onclick="window.location.href='index.html'">
         <img src="images/image.png" alt="Logo" />
         <h1>Flexbox Visualizer</h1>
       </div>
+
+      <!-- Dropdown Menu -->
       <select onchange="navigateToPage(this.value)">
-        <option value="main-axis.html" selected>Main Axis Alignment</option>
+        <option value="main-axis.html">Main Axis Alignment</option>
         <option value="flex-direction.html">Flex Direction</option>
         <option value="cross-axis.html">Cross Axis Alignment</option>
         <option value="multiple-lines.html">Multiple Lines</option>
         <option value="align-content.html">Align Content</option>
       </select>
     </div>
-
     <main class="wrap">
+      <!-- STAGE -->
       <section class="stage">
         <div class="controls">
-          <label>
-            justify-content
+          <label
+            >flex-direction
             <select id="value">
-              <option>flex-start</option>
-              <option>flex-end</option>
-              <option>center</option>
-              <option>space-between</option>
-              <option>space-around</option>
-              <option>space-evenly</option>
+              <option>row</option>
+              <option>row-reverse</option>
+              <option>column</option>
+              <option>column-reverse</option>
             </select>
           </label>
         </div>
+
         <div id="playground" class="playground">
           <div class="box g1"></div>
           <div class="box g2"></div>
@@ -219,6 +246,7 @@
         </div>
       </section>
 
+      <!-- CODE -->
       <aside class="code">
         <pre id="code"></pre>
       </aside>
@@ -230,15 +258,23 @@
           window.location.href = page;
         }
       }
+      // live control
       const pg = document.getElementById("playground");
       const value = document.getElementById("value");
       const code = document.getElementById("code");
 
       function render() {
-        pg.style.justifyContent = value.value;
-        code.textContent = `/* Container */\n.playground {\n  display: flex;\n  gap: 16px;\n  justify-content: ${value.value};\n}\n\n/* Items */\n.box {\n  flex: 0 0 140px;\n  height: 90px;\n}`;
-      }
+        pg.style.flexDirection = value.value;
+        code.textContent = `/* Container */
+.playground{
+  display: flex;
+  gap: 16px;
+  flex-direction: ${value.value};
+}
 
+/* Items */
+.box{ flex: 0 0 140px; height: 90px; }`;
+      }
       value.addEventListener("change", render);
       render();
     </script>

@@ -9,29 +9,23 @@
       :root {
         --bg-top: #0e1b4b;
         --bg-bottom: #0b122b;
-        --ink: #c9d1d9;
-        --card: #0d1117;
-        --accent: #4c9aff;
       }
       * {
-        margin: 0;
-        padding: 0;
         box-sizing: border-box;
-        overflow-x: hidden;
       }
+      html,
       body {
         margin: 0;
-        font-family: ui-sans-serif, system-ui, Arial, Helvetica, sans-serif;
+        padding: 0;
+        font-family: ui-sans-serif, system-ui, Arial;
         color: #fff;
-        min-height: 100vh;
-        background: linear-gradient(
-          180deg,
-          var(--bg-top) 0%,
-          var(--bg-bottom) 100%
-        );
+        height: 100%;
+        overflow: hidden;
+        background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
         display: flex;
         flex-direction: column;
       }
+
       /* Navbar */
       .navbar {
         display: flex;
@@ -89,28 +83,15 @@
         background-color: #0a0a0a;
         color: white;
       }
-      /* Layout */
       .wrap {
-        max-width: none; /* Remove fixed max-width */
-        width: 100%;
-        margin: 28px auto;
+        flex: 1;
         display: grid;
-        gap: 18px;
-        grid-template-columns: 80% 20%; /* Visualizer 80%, Code 20% */
-        padding: 0 16px;
+        grid-template-columns: 80% 20%;
+        height: 100%;
       }
-
-      @media (max-width: 900px) {
-        .wrap {
-          grid-template-columns: 1fr; /* Stack for small screens */
-        }
-      }
-
       .stage {
-        position: relative;
         padding: 22px;
         border-radius: 18px;
-        min-height: 360px;
         background: radial-gradient(
             1200px 300px at 50% 120%,
             rgba(126, 87, 243, 0.25),
@@ -124,6 +105,8 @@
           rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35) inset;
+        display: flex;
+        flex-direction: column;
       }
       .controls {
         display: flex;
@@ -131,36 +114,29 @@
         gap: 10px;
         margin-bottom: 14px;
       }
-      .controls label {
-        opacity: 0.85;
-      }
       .controls select {
-        margin-left: 6px;
+        background: #0d1117;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border-radius: 10px;
+        padding: 10px 12px;
       }
-
-      /* The visualized flex container */
       .playground {
+        flex: 1;
         display: flex;
         gap: 16px;
-        min-height: 260px;
         padding: 14px;
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.07);
         border-radius: 14px;
-        transition: all 0.25s ease;
+        transition: all 0.25s;
       }
-
-      /* Colorful tiles */
-      .box {
-        flex: 0 0 140px;
-        height: 90px;
+      .item {
+        flex: 0 0 120px;
+        height: 60px;
         border-radius: 16px;
         box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35),
           inset 0 1px 0 rgba(255, 255, 255, 0.15);
-        transition: transform 0.2s ease;
-      }
-      .box:hover {
-        transform: translateY(-4px);
       }
       .g1 {
         background: linear-gradient(180deg, #ff7a18, #ff3d81);
@@ -177,38 +153,25 @@
       .g5 {
         background: linear-gradient(180deg, #86efac, #22c55e);
       }
-
-      /* Code panel */
       .code {
         background: #0d1117;
         border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 18px;
         padding: 18px;
-        overflow: auto;
         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
         color: #e6edf3;
         line-height: 1.5;
-        min-height: 360px;
+        overflow: auto;
+        height: 100%;
       }
       .code pre {
         margin: 0;
-        white-space: pre;
-      }
-      .badge {
-        display: inline-block;
-        background: #1f6feb;
-        color: #fff;
-        border-radius: 999px;
-        padding: 2px 8px;
-        font-size: 0.8rem;
-        margin-left: 8px;
       }
     </style>
   </head>
   <body>
     <div class="navbar">
       <!-- Logo + Heading -->
-      <div class="navbar-left" onclick="window.location.href='main.html'">
+      <div class="navbar-left" onclick="window.location.href='index.html'">
         <img src="images/image.png" alt="Logo" />
         <h1>Flexbox Visualizer</h1>
       </div>
@@ -222,34 +185,41 @@
         <option value="align-content.html">Align Content</option>
       </select>
     </div>
+
     <main class="wrap">
-      <!-- STAGE -->
       <section class="stage">
         <div class="controls">
           <label
-            >flex-direction
-            <select id="value">
-              <option>row</option>
-              <option>row-reverse</option>
-              <option>column</option>
-              <option>column-reverse</option>
+            >align-items
+            <select id="ai">
+              <option>stretch</option>
+              <option>flex-start</option>
+              <option>center</option>
+              <option>flex-end</option>
+              <option>baseline</option>
+            </select>
+          </label>
+          <label
+            >justify-content
+            <select id="jc">
+              <option>flex-start</option>
+              <option>center</option>
+              <option>flex-end</option>
+              <option>space-between</option>
+              <option>space-around</option>
+              <option>space-evenly</option>
             </select>
           </label>
         </div>
-
         <div id="playground" class="playground">
-          <div class="box g1"></div>
-          <div class="box g2"></div>
-          <div class="box g3"></div>
-          <div class="box g4"></div>
-          <div class="box g5"></div>
+          <div class="item g1"></div>
+          <div class="item g2"></div>
+          <div class="item g3"></div>
+          <div class="item g4"></div>
+          <div class="item g5"></div>
         </div>
       </section>
-
-      <!-- CODE -->
-      <aside class="code">
-        <pre id="code"></pre>
-      </aside>
+      <aside class="code"><pre id="code"></pre></aside>
     </main>
 
     <script>
@@ -258,24 +228,25 @@
           window.location.href = page;
         }
       }
-      // live control
-      const pg = document.getElementById("playground");
-      const value = document.getElementById("value");
-      const code = document.getElementById("code");
+
+      const pg = document.getElementById("playground"),
+        ai = document.getElementById("ai"),
+        jc = document.getElementById("jc"),
+        code = document.getElementById("code");
 
       function render() {
-        pg.style.flexDirection = value.value;
-        code.textContent = `/* Container */
+        pg.style.alignItems = ai.value;
+        pg.style.justifyContent = jc.value;
+        code.textContent = `/* Container (align-items demo) */
 .playground{
   display: flex;
   gap: 16px;
-  flex-direction: ${value.value};
-}
-
-/* Items */
-.box{ flex: 0 0 140px; height: 90px; }`;
+  align-items: ${ai.value};
+  justify-content: ${jc.value};
+}`;
       }
-      value.addEventListener("change", render);
+
+      ai.onchange = jc.onchange = render;
       render();
     </script>
   </body>
